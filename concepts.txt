@@ -1,0 +1,132 @@
+---------------------------------SETUP.PY-------------------------------------------------------
+
+setup.py --> it turns your project into an 
+installable Python package and automatically 
+installs the libraries listed in requirements.txt.
+
+Its main purpose is to tell Python/pip:
+"This is my Python project. Here is its name, version, 
+author, package structure, and the external libraries it needs."
+
+the -e . tells pip:
+"Also install the current project."
+
+setuptools is a Python package used to build and install Python projects.
+It provides tools for packaging your project.
+
+---------
+You have a proper Python application/package.
+You might want to import things like:
+"from mlproject.components.data_ingestion import DataIngestion"
+Packaging makes this project structure manageable and installable.
+
+PACKAGE:
+A package is basically a collection of Python code that you organize so Python can import and use it as a unit.
+MODULE:
+A module is basically one .py file.
+----------------
+
+__INIT__.PY:
+tells Python: "Treat this directory as a Python package."
+
+packages=find_packages()
+find_packages() searches for directories that are Python packages. 
+Traditionally, the presence of __init__.py --> is what tells it:
+"This directory is a package; include it when installing the project."
+
+"pip install mlproject" only works if mlproject is 
+available somewhere pip can find it — for example, PyPI, 
+a Git repository, or a local package.
+setup.py is basically the instruction sheet for pip about your package.
+When someone runs: pip install mlproject
+pip needs to know:
+“What exactly is mlproject? 
+Which Python packages/files should I install? 
+What dependencies does it need?”
+
+setup.py tells pip how to package and install YOUR project.
+-----------------------------------------------------------------------------------------------------
+
+
+So, when we type "pip install -r requirements.txt" 
+Now, because of the "-e ." --> mapped to setup.py --> automatically this entire package will get built.
+
+After running this command -->  we can see that a folder gets created by itself.
+mlproject.egg-info --> automatically generated packaging information created when you install your project.
+Think of it as metadata about your installed package.
+
+
+--------------------------PIPELINES----------------------------------
+The pipeline folder is basically where you put the code that controls the overall ML workflow.
+
+Think:
+components/
+    ↓
+individual tasks
+-----------------------
+pipeline/
+    ↓
+connects those tasks together
+
+
+train_pipeline.py
+
+Its job is to run the complete training process in the correct order.
+
+For example: for train_pipeline: 
+train_pipeline.py
+      ↓
+Data Ingestion
+      ↓
+Data Transformation
+      ↓
+Model Training
+      ↓
+Save trained model
+
+So instead of manually running each component, you can run one training pipeline.
+
+Why keep them in pipeline/?
+
+Because:
+components/
+→ "What individual ML tasks can I perform?"
+----------------
+pipeline/
+→ "How do I combine those tasks into a complete workflow?"
+
+--------------------------------ECR IMAGES---------------------------------------------
+When we push any image on Docker-hub --> by default its public.
+But, when working for companies, this docker image will be private,
+so, in order for it to be private, in AWS you have to put it in an ECR instance.
+(ECR --> Fully managed docker container to manage, deploy, store docker images.)
+
+So, wtv image we have created over here, we will put it in ECR repository
+and from there, deployment will be done to the ec2 instance.
+
+----------------ETL PIPELINES------------------------------------
+E - Extract (Extract from the source)
+T - Transform
+L - Load (load into the destination)
+
+Source -----> Transformation -----> Destination 
+Source: our source/dataset is present in our local folder,
+on this dataset, we'll do some pre-processing: cleaning raw Data
+then, we'll convert it into JSON and then save it in our destination.
+
+Now, in this scenario, our destination database is MongoDB.
+Then, the project structure shall begin :)
+
+Destination database could be MongoDB, AWS DynamoDB, MySQL, S3 buckets.
+
+--------------------------------DATA INGESTION----------------------------------------------
+Data ingestion --> Our data is already present in our MongoDB. (after push_data.py file is run).
+In data ingestion, we read this specific data so that it can be used for training, testing etc.
+
+Data Ingestion config --> required info like:
+Which should be our data ingestion directory? 
+Which should be our trainig file path, testing file path? etc etc required info (for reading the data)
+
+Data Ingestion Artifact --> output of the Data Ingestion config.
+it stores the raw file, the train/test split csvs, etc.
+
