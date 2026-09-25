@@ -1,3 +1,7 @@
+'''
+this file does the "converting of dataset in JSON format" for loading into the destination part
+'''
+
 import os
 import sys
 import json
@@ -50,7 +54,9 @@ class NetworkDataExtract():
         
 if __name__=='__main__':
     FILE_PATH=r"Network_Data\PhisingData.csv"
-    DATABASE="KRISHAI"
+    DATABASE="KRISHAI" 
+    #this name will be displayed in our MongoDB Atlas --> cluster0 --> collections: 
+    # DATABASE = "KRISHAI", inside it, Collection name = "NetworkData"
     Collection="NetworkData"
     networkobj=NetworkDataExtract()
     records=networkobj.csv_to_json_convertor(file_path=FILE_PATH)
